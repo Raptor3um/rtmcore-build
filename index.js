@@ -17,8 +17,8 @@
  * </ul>`
  * <li> `browser` - generate files needed for browser (browserify)
  * <ul>
- * <li> `browser:uncompressed` - build uncomprssed browser bundle (`ravencore-*.js`)
- * <li> `browser:compressed` - build compressed browser bundle (`ravencore-*.min.js`)
+ * <li> `browser:uncompressed` - build uncomprssed browser bundle (`rtmcore-*.js`)
+ * <li> `browser:compressed` - build compressed browser bundle (`rtmcore-*.min.js`)
  * <li> `browser:maketests` - build `tests.js`, needed for testing without karma
  * </ul>`
  * <li> `lint` - run `jshint`
@@ -54,12 +54,12 @@ function startGulp(name, opts) {
 
   opts = opts || {};
   var browser = !opts.skipBrowser;
-  var fullname = name ? 'ravencore-' + name : 'ravencore';
+  var fullname = name ? 'rtmcore-' + name : 'rtmcore';
   var files = ['lib/**/*.js'];
   var tests = ['test/**/*.js'];
   var alljs = files.concat(tests);
 
-  var buildPath = './node_modules/ravencore-build/';
+  var buildPath = './node_modules/rtmcore-build/';
   var buildModulesPath = buildPath + 'node_modules/';
   var buildBinPath = buildPath + 'node_modules/.bin/';
 
@@ -129,9 +129,9 @@ function startGulp(name, opts) {
     var browserifyCommand;
 
     if (name !== 'lib') {
-      browserifyCommand = browserifyPath + ' --require ./index.js:' + fullname + ' --external ravencore-lib -o ' + fullname + '.js';
+      browserifyCommand = browserifyPath + ' --require ./index.js:' + fullname + ' --external rtmcore-lib -o ' + fullname + '.js';
     } else {
-      browserifyCommand = browserifyPath + ' --require ./index.js:ravencore-lib -o ravencore-lib.js';
+      browserifyCommand = browserifyPath + ' --require ./index.js:rtmcore-lib -o rtmcore-lib.js';
     }
 
     gulp.task('browser:uncompressed', shell.task([
@@ -320,7 +320,7 @@ function startGulp(name, opts) {
   });
 
   gulp.task('release:push', function(cb) {
-    git.push('underdarkskies', 'master', {
+    git.push('Raptor3um', 'master', {
       args: ''
     }, cb);
   });
@@ -329,7 +329,7 @@ function startGulp(name, opts) {
     var pjson = require('../../package.json');
     var name = 'v' + pjson.version;
     git.tag(name, 'Release ' + name, function() {
-      git.push('underdarkskies', name, cb);
+      git.push('Raptor3um', name, cb);
     });
   });
 
@@ -354,7 +354,7 @@ function startGulp(name, opts) {
       browser ? 'browser' : 'noop',
       // Commit
       'release:build-commit',
-      // Run git push underdarkskies $VERSION
+      // Run git push Raptor3um $VERSION
       'release:push-tag',
       // Run npm publish
       'release:publish',
